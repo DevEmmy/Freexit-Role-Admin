@@ -1,25 +1,22 @@
-
+import { BaseModel } from "./BaseModel";
 import { User } from "./User";
-
-const {Entity, ManyToMany, Column, Generated, BeforeInsert} = require("typeorm");
+import { Entity, ManyToMany, Column, Generated } from "typeorm";
 
 export enum UserType {
-    BASIC = 1,
-    DELIVERY_PARTNER = 2,
-    ADMIN = 3
+  BASIC = 1,
+  DELIVERY_PARTNER = 2,
+  ADMIN = 3,
 }
 
-
 @Entity()
-export class Roles{
-    
-    @Generated("uuid")  
-    @Column()
-    public roleId?: String;
+export class Roles extends BaseModel {
+  @Generated("uuid")
+  @Column({ nullable: false })
+  roleId?: String;
 
-    @Column()
-    public role?: String;
+  @Column({ nullable: false })
+  name?: string;
 
-    @ManyToMany(() => User, (user: User) => user.roles)
-    public users?: User[];
+  @ManyToMany(() => User, (user: User) => user.roles)
+  users?: User[];
 }
