@@ -1,4 +1,6 @@
-const {Entity, Column, Generated, BeforeInsert} = require("typeorm");
+import { Roles } from "./Roles";
+
+const {Entity, Column, Generated, BeforeInsert, ManyToMany, JoinTable} = require("typeorm");
 
 export enum UserType {
     BASIC = 1,
@@ -41,11 +43,7 @@ export class User{
     @Column({ nullable: true})
     public address?: string;
 
-    @Column({
-        type: "enum",
-        enumName: `UserType`,
-        enum: UserType,
-        default: UserType.ADMIN
-    })
-    public userType?: UserType;
+    @ManyToMany(()=> Roles)
+    @JoinTable()
+    roles?: Roles[]
 }
