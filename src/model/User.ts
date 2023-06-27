@@ -15,7 +15,7 @@ export class User extends BaseModel{
     
     @Generated("uuid")  
     @Column()
-    public userId?: String;
+    public userId?: string;
 
     @Column({ nullable: true})
     public username?: string;
