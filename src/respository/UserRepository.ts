@@ -9,13 +9,14 @@ export default class UserRepository{
         return result;
     }
 
-    // async findOne(userId: string){
-    //     let result = await this.userRepository.findOne({ where?: {userId} });
-    //     return result
-    // }
+    async findOne(userId: string){
+        // let result = await this.userRepository.findOne({ where?: {userId} });
+        // return result
+    }
 
     async find(){
         let result = await this.userRepository.find()
         return result
     }
 }
+

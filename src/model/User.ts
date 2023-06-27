@@ -1,3 +1,4 @@
+import { BaseModel } from "./BaseModel";
 import { Roles } from "./Roles";
 
 const {Entity, Column, Generated, BeforeInsert, ManyToMany, JoinTable} = require("typeorm");
@@ -10,7 +11,7 @@ export enum UserType {
 
 
 @Entity()
-export class User{
+export class User extends BaseModel{
     
     @Generated("uuid")  
     @Column()
