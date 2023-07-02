@@ -7,6 +7,16 @@ import { RolePermission } from "./model/RolePermission";
 
 const express = require("express")
 const app = express();
+import Container from 'typedi';
+import { EntityController } from "./controller/EntityController";
+import {Response, Request, NextFunction } from "express"
+import cors from "cors";
+
+
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb' }))
+app.use(cors())
+app.use(express.static('server'))
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -24,12 +34,18 @@ export const AppDataSource = new DataSource({
      ],
 })
 
+
 AppDataSource.initialize()
     .then(() => {
         // here you can start to work with your database
         console.log("Database now running")
     })
     .catch((error) => console.log(error))
+
+
+const entityController = Container.get(EntityController);
+app.get("/entity/add", (req:any, res: any)=>entityController.addEntities(req, res))
+
 
 const port = process.env.PORT?.toString || "3030"
 

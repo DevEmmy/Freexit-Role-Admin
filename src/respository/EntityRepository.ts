@@ -1,6 +1,9 @@
+import { Service } from "typedi";
 import { AppDataSource } from "..";
 import { Entity } from "../model/Entity";
 
+
+@Service()
 export default class EntityRepository{
     private entityRepository = AppDataSource.getRepository(Entity);
     
@@ -19,13 +22,13 @@ export default class EntityRepository{
         return result
     }
 
-    async delete(userId: string){
-        let result = await this.entityRepository.delete(userId)
+    async delete(entityId: string){
+        let result = await this.entityRepository.delete(entityId)
         return result;
     }
 
-    async update(userId: string, data: Object){
-        let result = await this.entityRepository.update(userId, data)
+    async update(entityId: string, data: Object){
+        let result = await this.entityRepository.update(entityId, data)
         return result;
     }
 }

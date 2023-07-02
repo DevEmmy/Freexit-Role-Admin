@@ -1,6 +1,9 @@
 import {User} from "../model/User";
 import { AppDataSource } from "..";
+import { Service } from "typedi";
 
+
+@Service()
 export default class UserRepository{
     private userRepository = AppDataSource.getRepository(User);
     

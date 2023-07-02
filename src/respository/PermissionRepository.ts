@@ -1,6 +1,8 @@
+import { Service } from "typedi";
 import { AppDataSource } from "..";
 import { Permission } from "../model/Permission";
 
+@Service()
 export default class PermissionRepository{
     private permissionRepository = AppDataSource.getRepository(Permission);
     
@@ -19,13 +21,13 @@ export default class PermissionRepository{
         return result
     }
 
-    async delete(userId: string){
-        let result = await this.permissionRepository.delete(userId)
+    async delete(permissionId: string){
+        let result = await this.permissionRepository.delete(permissionId)
         return result;
     }
 
-    async update(userId: string, data: Object){
-        let result = await this.permissionRepository.update(userId, data)
+    async update(permissionId: string, data: Object){
+        let result = await this.permissionRepository.update(permissionId, data)
         return result;
     }
 }
