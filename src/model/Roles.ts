@@ -12,7 +12,7 @@ export enum UserType {
 export class Roles extends BaseModel {
   @Generated("uuid")
   @Column({ nullable: false })
-  roleId?: String;
+  roleId?: string;
 
   @Column({ nullable: false })
   name?: string;

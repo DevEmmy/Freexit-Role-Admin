@@ -4,7 +4,7 @@ import { AppDataSource } from "..";
 export default class UserRepository{
     private userRepository = AppDataSource.getRepository(User);
     
-    async save(data: Object){
+    async save(data: any){
         let result = await this.userRepository.save(data);
         return result;
     }
@@ -29,4 +29,3 @@ export default class UserRepository{
         return result;
     }
 }
-
