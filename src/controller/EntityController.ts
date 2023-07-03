@@ -22,4 +22,7 @@ export class EntityController{
             console.log(err)
         }
     }
+
+
+    
 }

@@ -17,6 +17,11 @@ export default class UserRepository{
         return result
     }
 
+    async findByEmail(email: string){
+        let result = await this.userRepository.findOne({ where: {email} });
+        return result
+    }
+
     async find(){
         let result = await this.userRepository.find()
         return result

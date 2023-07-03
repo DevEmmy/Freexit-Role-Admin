@@ -9,6 +9,7 @@ const express = require("express")
 const app = express();
 import Container from 'typedi';
 import { EntityController } from "./controller/EntityController";
+import { UserController } from "./controller/UserController";
 import {Response, Request, NextFunction } from "express"
 import cors from "cors";
 
@@ -44,7 +45,11 @@ AppDataSource.initialize()
 
 
 const entityController = Container.get(EntityController);
-app.get("/entity/add", (req:any, res: any)=>entityController.addEntities(req, res))
+app.get("/entity/add", (req:Request, res: Response)=>entityController.addEntities(req, res))
+
+const userController = Container.get(UserController);
+app.post("/users/sign-in",  (req: Request, res: Response)=> userController.login(req, res));
+app.post("/users/sign-up",  (req: Request, res: Response)=> userController.signUp(req, res));
 
 
 const port = process.env.PORT?.toString || "3030"
