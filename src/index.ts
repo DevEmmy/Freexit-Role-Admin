@@ -13,6 +13,8 @@ import { UserController } from "./controller/UserController";
 import {Response, Request, NextFunction } from "express"
 import cors from "cors";
 import { PermissionController } from "./controller/PermissionController";
+import { RolePermissionController } from "./controller/RolePermissionController";
+import { RoleController } from "./controller/RoleController";
 
 
 app.use(express.json({ limit: '50mb' }));
@@ -60,6 +62,19 @@ const permissionController = Container.get(PermissionController)
 app.post("/permissions/add",  (req: Request, res: Response)=> permissionController.addPermission(req, res));
 app.get("/permissions/all", (req: Request, res: Response)=> permissionController.getAllPermissions(req, res));
 app.delete("/permissions/delete/:permissionId", (req: Request, res: Response)=> permissionController.delete(req, res))
+
+
+//RolePermissions
+const rolePermissionController = Container.get(RolePermissionController)
+app.post("/role-permissions/add",  (req: Request, res: Response)=> rolePermissionController.add(req, res));
+app.get("/role-permissions/all", (req: Request, res: Response)=> rolePermissionController.getAll(req, res));
+app.delete("/role-permissions/delete/:permissionId", (req: Request, res: Response)=> rolePermissionController.delete(req, res))
+
+//Roles
+const roleController = Container.get(RoleController)
+app.post("/roles/add",  (req: Request, res: Response)=> roleController.add(req, res));
+app.get("/roles/all", (req: Request, res: Response)=> roleController.getAll(req, res));
+app.delete("/roles/delete/:roleId", (req: Request, res: Response)=> roleController.delete(req, res))
 
 
 const port = process.env.PORT?.toString || "3030"
