@@ -12,6 +12,7 @@ import { EntityController } from "./controller/EntityController";
 import { UserController } from "./controller/UserController";
 import {Response, Request, NextFunction } from "express"
 import cors from "cors";
+import { PermissionController } from "./controller/PermissionController";
 
 
 app.use(express.json({ limit: '50mb' }));
@@ -43,13 +44,22 @@ AppDataSource.initialize()
     })
     .catch((error) => console.log(error))
 
-
+//Entities
 const entityController = Container.get(EntityController);
 app.get("/entity/add", (req:Request, res: Response)=>entityController.addEntities(req, res))
+app.get("/entity/all", (req:Request, res: Response)=>entityController.getAllEntries(req, res))
 
+
+//Users
 const userController = Container.get(UserController);
 app.post("/users/sign-in",  (req: Request, res: Response)=> userController.login(req, res));
 app.post("/users/sign-up",  (req: Request, res: Response)=> userController.signUp(req, res));
+
+//Permissions
+const permissionController = Container.get(PermissionController)
+app.post("/permissions/add",  (req: Request, res: Response)=> permissionController.addPermission(req, res));
+app.get("/permissions/all", (req: Request, res: Response)=> permissionController.getAllPermissions(req, res));
+app.delete("/permissions/delete/:permissionId", (req: Request, res: Response)=> permissionController.delete(req, res))
 
 
 const port = process.env.PORT?.toString || "3030"
