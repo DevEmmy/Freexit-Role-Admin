@@ -7,12 +7,12 @@ export class RoleService {
 
     }
 
-    async addPermission(role: string){
+    async add(role: any){
         let result = await this.roleRepository.save(role);
         return result;
     }
 
-    async deletePermission(roleId: string){
+    async delete(roleId: string){
         let result = await this.roleRepository.delete(roleId);
         return result;
     }

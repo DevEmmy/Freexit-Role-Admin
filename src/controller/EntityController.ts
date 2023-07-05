@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { EntityService } from "../services/EntityService";
 import { Inject, Service } from "typedi";
+import { responseFunction, returnObject } from "../utilities/response";
 
 @Service()
 export class EntityController{
@@ -23,6 +24,14 @@ export class EntityController{
         }
     }
 
-
-    
+    async getAllEntries(request: Request, response: Response){
+        try{
+            let result = await this.entityService.getAll();
+            responseFunction(result, response)
+        }
+        catch(err:any){
+            let result = returnObject(null, err.message, err.status)
+            responseFunction(result, response)
+        }
+    }
 }

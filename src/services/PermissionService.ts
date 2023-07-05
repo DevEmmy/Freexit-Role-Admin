@@ -1,5 +1,7 @@
 import { Service } from "typedi";
 import PermissionRepository from "../respository/PermissionRepository";
+import { returnObject } from "../utilities/response";
+import { CreatePermissionDTO } from "../dto/permissions/createPermissionDto";
 
 @Service()
 export class PermissionService {
@@ -7,14 +9,14 @@ export class PermissionService {
 
     }
 
-    async addPermission(permission: string){
+    async addPermission(permission: CreatePermissionDTO){
         let result = await this.permissionRepository.save(permission);
-        return result;
+        return returnObject(result);
     }
 
     async deletePermission(permissionId: string){
         let result = await this.permissionRepository.delete(permissionId);
-        return result;
+        return returnObject(result);
     }
 
     async updatePermission(permissionId: string, data: any){
@@ -24,11 +26,11 @@ export class PermissionService {
 
     async getAll(){
         let result = await this.permissionRepository.find();
-        return result;
+        return returnObject(result);
     }
 
     async getOne(permissionId: string){
         let result = await this.permissionRepository.findOne(permissionId);
-        return result;
+        return returnObject(result);
     }
 }

@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { UserServices } from "../services/UserServices";
 import { Service } from "typedi";
-import { responseFunction } from "../utilities/response";
+import { responseFunction, returnObject } from "../utilities/response";
 
 @Service()
 export class UserController{
@@ -9,14 +9,26 @@ export class UserController{
     }
 
     async login(request: Request, response: Response){
-        let data = request.body;
-        let result = await this.userService.signIn(data);
-        responseFunction(result, response)
+        try{
+            let data = request.body;
+            let result = await this.userService.signIn(data);
+            responseFunction(result, response)
+        }
+        catch(err:any){
+            let result = returnObject(null, err.message, err.status)
+            responseFunction(result, response)
+        }
     }
 
     async signUp(request: Request, response: Response){
-        let data = request.body;
-        let result = await this.userService.signUp(data);
-        responseFunction(result, response)
+        try{
+           let data = request.body;
+            let result = await this.userService.signUp(data);
+            responseFunction(result, response) 
+        }
+        catch(err:any){
+            let result = returnObject(null, err.message, err.status)
+            responseFunction(result, response)
+        }
     }
 }

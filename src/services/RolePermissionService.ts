@@ -1,5 +1,6 @@
 import RolePermissionRepository from "../respository/RolePermissionRepository";
 import {Service} from "typedi";
+import { returnObject } from "../utilities/response";
 
 @Service()
 export class RolePermissionService {
@@ -7,28 +8,28 @@ export class RolePermissionService {
 
     }
 
-    async addPermission(rolePermission: string){
+    async addRolePermission(rolePermission: string){
         let result = await this.rolePermissionRepository.save(rolePermission);
-        return result;
+        return returnObject(result);
     }
 
-    async deletePermission(rolePermissionId: string){
+    async deleteRolePermission(rolePermissionId: string){
         let result = await this.rolePermissionRepository.delete(rolePermissionId);
-        return result;
+        return returnObject(result);
     }
 
-    async updatePermission(rolePermissionId: string, data: any){
+    async updateRolePermission(rolePermissionId: string, data: any){
         let result = await this.rolePermissionRepository.update(rolePermissionId, data);
-        return result;
+        return returnObject(result);
     }
 
     async getAll(){
         let result = await this.rolePermissionRepository.find();
-        return result;
+        return returnObject(result);
     }
 
     async getOne(rolePermissionId: string){
         let result = await this.rolePermissionRepository.findOne(rolePermissionId);
-        return result;
+        return returnObject(result);
     }
 }
