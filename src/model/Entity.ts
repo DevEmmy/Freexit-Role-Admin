@@ -1,5 +1,6 @@
-import { Column, Entity as DbEntity, Generated } from "typeorm";
+import { Column, Entity as DbEntity, Generated, JoinTable, OneToMany } from "typeorm";
 import { BaseModel } from "./BaseModel";
+import { Permission } from "./Permission";
 
 @DbEntity()
 export class Entity extends BaseModel {
@@ -9,4 +10,8 @@ export class Entity extends BaseModel {
 
   @Column({ nullable: false })
   name?: string;
+
+  @OneToMany(()=> Permission, permission => permission.entity)
+    @JoinTable()
+    permissions?: Permission[]
 }

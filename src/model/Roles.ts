@@ -1,12 +1,9 @@
 import { BaseModel } from "./BaseModel";
+import { Permission } from "./Permission";
 import { User } from "./User";
 import { Entity, ManyToMany, Column, Generated } from "typeorm";
 
-export enum UserType {
-  BASIC = 1,
-  DELIVERY_PARTNER = 2,
-  ADMIN = 3,
-}
+
 
 @Entity()
 export class Roles extends BaseModel {
@@ -19,4 +16,7 @@ export class Roles extends BaseModel {
 
   @ManyToMany(() => User, (user: User) => user.roles)
   users?: User[];
+
+  @ManyToMany(() => Permission, (permission: Permission) => permission.roles)
+  permissions?: Permission[];
 }

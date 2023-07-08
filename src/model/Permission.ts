@@ -1,7 +1,9 @@
-import { Column, Entity, Generated } from "typeorm";
+import { Column, Entity as DBEntity, Generated, ManyToMany, ManyToOne } from "typeorm";
 import { BaseModel } from "./BaseModel";
+import { Entity } from "./Entity";
+import { Roles } from "./Roles";
 
-@Entity()
+@DBEntity()
 export class Permission extends BaseModel {
   @Generated("uuid")
   @Column({ nullable: false })
@@ -13,6 +15,9 @@ export class Permission extends BaseModel {
   @Column({ nullable: false })
   slug?: string;
 
-  @Column({ nullable: false })
-  entityId?: string;
+  @ManyToOne(() => Entity, (entity: Entity) => entity.permissions)
+  entity?: Entity;
+
+  @ManyToMany(() => Permission, (roles: Roles) => roles.permissions)
+  roles?: Roles[];
 }

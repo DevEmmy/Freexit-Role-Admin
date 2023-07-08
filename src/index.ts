@@ -48,7 +48,7 @@ AppDataSource.initialize()
 
 //Entities
 const entityController = Container.get(EntityController);
-app.get("/entity/add", (req:Request, res: Response)=>entityController.addEntities(req, res))
+app.post("/entity/add", (req:Request, res: Response)=>entityController.addEntities(req, res))
 app.get("/entity/all", (req:Request, res: Response)=>entityController.getAllEntries(req, res))
 
 
@@ -63,6 +63,8 @@ app.post("/permissions/add",  (req: Request, res: Response)=> permissionControll
 app.get("/permissions/all", (req: Request, res: Response)=> permissionController.getAllPermissions(req, res));
 app.delete("/permissions/delete/:permissionId", (req: Request, res: Response)=> permissionController.delete(req, res))
 
+//3960055d-f219-4b03-9964-551ca48b0dd5
+//f8409407-01b1-43ac-9f15-23c306e323a2"
 
 //RolePermissions
 const rolePermissionController = Container.get(RolePermissionController)
@@ -74,6 +76,7 @@ app.delete("/role-permissions/delete/:permissionId", (req: Request, res: Respons
 const roleController = Container.get(RoleController)
 app.post("/roles/add",  (req: Request, res: Response)=> roleController.add(req, res));
 app.get("/roles/all", (req: Request, res: Response)=> roleController.getAll(req, res));
+app.get("/roles/get-permissions/roleId", (req: Request, res: Response)=> roleController.getAllPermissions(req, res));
 app.delete("/roles/delete/:roleId", (req: Request, res: Response)=> roleController.delete(req, res))
 
 

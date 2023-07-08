@@ -1,5 +1,6 @@
 import RolesRepository from "../respository/RolesRepository";
 import {Service} from "typedi";
+import { returnObject } from "../utilities/response";
 
 @Service()
 export class RoleService {
@@ -30,5 +31,11 @@ export class RoleService {
     async getOne(roleId: string){
         let result = await this.roleRepository.findOne(roleId);
         return result;
+    }
+
+    async getRolePermissions(roleId: string){
+        let result = await this.roleRepository.findOne(roleId)
+        let permissions = result?.permissions
+        return returnObject(permissions)
     }
 }

@@ -33,8 +33,20 @@ export class RoleController{
 
     async delete(request: Request, response: Response){
         try{
-            let {rolePermissionId} = request.params;
-            let result = await this.roleService.delete(rolePermissionId);
+            let {roleId} = request.params;
+            let result = await this.roleService.delete(roleId);
+            responseFunction(result, response)
+        }
+        catch(err:any){
+            let result = returnObject(null, err.message, err.status)
+            responseFunction(result, response)
+        }
+    }
+
+    async getAllPermissions(request: Request, response: Response){
+        try{
+            let {roleId} = request.params;
+            let result = await this.roleService.getRolePermissions(roleId)
             responseFunction(result, response)
         }
         catch(err:any){
