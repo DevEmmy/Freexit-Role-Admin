@@ -12,10 +12,11 @@ export default class RolesRepository{
     }
 
     async findOne(roleId: string){
-        let result = await this.rolesRepository.findOne({ where: {roleId} });
+        let result = await this.rolesRepository.findOne({ where: {roleId}});
         return result
     }
 
+    //{ relations: ['permissions'] }
     async find(){
         let result = await this.rolesRepository.find()
         return result

@@ -28,7 +28,7 @@ export const AppDataSource = new DataSource({
     port: 5432,
     username: "postgres",
     password: "devemmy",
-    database: "roleadministration",
+    database: "freexitra",
     synchronize: true,
     logging: true,
     entities: [User, Roles, Entity, Permission, RolePermission],
@@ -56,6 +56,7 @@ app.get("/entity/all", (req:Request, res: Response)=>entityController.getAllEntr
 const userController = Container.get(UserController);
 app.post("/users/sign-in",  (req: Request, res: Response)=> userController.login(req, res));
 app.post("/users/sign-up",  (req: Request, res: Response)=> userController.signUp(req, res));
+app.post("/users/invite-user",  (req: Request, res: Response)=> userController.inviteUserAsAdmin(req, res));
 
 //Permissions
 const permissionController = Container.get(PermissionController)
@@ -65,6 +66,10 @@ app.delete("/permissions/delete/:permissionId", (req: Request, res: Response)=> 
 
 //3960055d-f219-4b03-9964-551ca48b0dd5
 //f8409407-01b1-43ac-9f15-23c306e323a2"
+
+//afdd2d43-66b5-4ebb-8e94-b5c132ac24fc
+//a947aa2e-6836-4b10-b193-077e9082f5aa
+//3960055d-f219-4b03-9964-551ca48b0dd5
 
 //RolePermissions
 const rolePermissionController = Container.get(RolePermissionController)
@@ -78,6 +83,7 @@ app.post("/roles/add",  (req: Request, res: Response)=> roleController.add(req, 
 app.get("/roles/all", (req: Request, res: Response)=> roleController.getAll(req, res));
 app.get("/roles/get-permissions/roleId", (req: Request, res: Response)=> roleController.getAllPermissions(req, res));
 app.delete("/roles/delete/:roleId", (req: Request, res: Response)=> roleController.delete(req, res))
+app.post("/roles/add-permission/:roleId", (req: Request, res: Response)=> roleController.addPermissionsToRole(req, res))
 
 
 const port = process.env.PORT?.toString || "3030"

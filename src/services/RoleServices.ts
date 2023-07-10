@@ -1,10 +1,11 @@
 import RolesRepository from "../respository/RolesRepository";
 import {Service} from "typedi";
 import { returnObject } from "../utilities/response";
+import PermissionRepository from "../respository/PermissionRepository";
 
 @Service()
 export class RoleService {
-    constructor(private readonly roleRepository: RolesRepository){
+    constructor(private readonly roleRepository: RolesRepository, private readonly permissionRepository: PermissionRepository){
 
     }
 
@@ -13,12 +14,30 @@ export class RoleService {
         return result;
     }
 
+    async addPermissionToRole(roleId: string, permission: string | string[]){
+        let role :any = await this.getOne(roleId);
+        let permissions = []
+        if(typeof(permission) === "object"){
+            for(let i=0; i <= permission.length-1; i++ ){
+                let permissionObject = await this.permissionRepository.findOne(permission[i])
+                permissions.push(permissionObject)
+            }
+        }
+        else{
+            let permissionObject = await this.permissionRepository.findOne(permission);
+            permissions.push(permissionObject)
+        }
+        role.permissions += permissions
+        role = await this.updateRole(roleId, role)
+        return returnObject(role);
+    }
+
     async delete(roleId: string){
         let result = await this.roleRepository.delete(roleId);
         return result;
     }
 
-    async updatePermission(roleId: string, data: any){
+    async updateRole(roleId: string, data: any){
         let result = await this.roleRepository.update(roleId, data);
         return result;
     }

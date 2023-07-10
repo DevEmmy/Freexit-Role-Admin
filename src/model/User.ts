@@ -1,3 +1,4 @@
+import { ManyToOne } from "typeorm";
 import { BaseModel } from "./BaseModel";
 import { Roles } from "./Roles";
 
@@ -26,13 +27,13 @@ export class User extends BaseModel{
     @Column({ nullable: true})
     public lastname?: string;
 
-    @Column({ nullable: true})
+    @Column({ nullable: false,unique: true})
     public email?: string;
  
-    @Column({ nullable: true})
+    @Column({ nullable: false})
     public password?: string;
 
-    @Column({ nullable: false, unique: true})
+    @Column({ nullable: true, unique: true})
     public phonenumber?: string;
 
     @Column({ nullable: true})
@@ -44,7 +45,7 @@ export class User extends BaseModel{
     @Column({ nullable: true})
     public address?: string;
 
-    @ManyToMany(()=> Roles)
+    @ManyToOne(()=> Roles)
     @JoinTable()
-    roles?: Roles[]
+    role?: Roles
 }

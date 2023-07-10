@@ -20,6 +20,19 @@ export class RoleController{
         }
     }
 
+    async addPermissionsToRole(request: Request, response: Response){
+        try{
+            let roleId = request.params.roleId;
+            let {permission} = request.body;
+            let result = await this.roleService.addPermissionToRole(roleId, permission)
+            responseFunction(result, response)
+        }
+        catch(err: any){
+            let result = returnObject(null, err.message, err.status)
+            responseFunction(result, response)
+        }
+    }
+
     async getAll(request: Request, response: Response){
         try{
             let result = await this.roleService.getAll();

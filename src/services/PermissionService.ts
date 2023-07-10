@@ -2,14 +2,16 @@ import { Service } from "typedi";
 import PermissionRepository from "../respository/PermissionRepository";
 import { returnObject } from "../utilities/response";
 import { CreatePermissionDTO } from "../dto/permissions/createPermissionDto";
+import EntityRepository from "../respository/EntityRepository";
 
 @Service()
 export class PermissionService {
-    constructor(private readonly permissionRepository: PermissionRepository){
+    constructor(private readonly permissionRepository: PermissionRepository, private readonly entityRepository: EntityRepository){
 
     }
 
     async addPermission(permission: CreatePermissionDTO){
+        permission.entity = await this.entityRepository.findOne(permission.entity)
         let result = await this.permissionRepository.save(permission);
         return returnObject(result);
     }

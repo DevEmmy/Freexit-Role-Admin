@@ -1,7 +1,7 @@
 import { BaseModel } from "./BaseModel";
 import { Permission } from "./Permission";
 import { User } from "./User";
-import { Entity, ManyToMany, Column, Generated } from "typeorm";
+import { Entity, ManyToMany, Column, Generated, OneToMany } from "typeorm";
 
 
 
@@ -14,7 +14,7 @@ export class Roles extends BaseModel {
   @Column({ nullable: false })
   name?: string;
 
-  @ManyToMany(() => User, (user: User) => user.roles)
+  @OneToMany(() => User, (user: User) => user.role)
   users?: User[];
 
   @ManyToMany(() => Permission, (permission: Permission) => permission.roles)

@@ -10,9 +10,14 @@ export class UserServices{
     constructor(private readonly userRepository: UserRepository){
     }
 
-    async signUp (data: any){
+    async signUp (data: any, revealPassword: boolean = false){
+        let initialPassword = data.password
         data.password = await bcrypt.hash(data.password, saltRounds);
+        console.log(data)
         let result = await this.userRepository.save(data);
+        if(revealPassword){
+            result.password = initialPassword;
+        }
         return returnObject(result, "Signed Up Successfully");
     }
 
