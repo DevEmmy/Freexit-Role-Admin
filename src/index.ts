@@ -15,6 +15,7 @@ import cors from "cors";
 import { PermissionController } from "./controller/PermissionController";
 import { RolePermissionController } from "./controller/RolePermissionController";
 import { RoleController } from "./controller/RoleController";
+import validateAuth from "./middlewares/validateAuth";
 
 
 app.use(express.json({ limit: '50mb' }));
@@ -28,7 +29,7 @@ export const AppDataSource = new DataSource({
     port: 5432,
     username: "postgres",
     password: "devemmy",
-    database: "freexitra",
+    database: "free",
     synchronize: true,
     logging: true,
     entities: [User, Roles, Entity, Permission, RolePermission],
@@ -49,7 +50,7 @@ AppDataSource.initialize()
 //Entities
 const entityController = Container.get(EntityController);
 app.post("/entity/add", (req:Request, res: Response)=>entityController.addEntities(req, res))
-app.get("/entity/all", (req:Request, res: Response)=>entityController.getAllEntries(req, res))
+app.get("/entity/all", validateAuth ,(req:Request, res: Response)=>entityController.getAllEntries(req, res))
 
 
 //Users

@@ -45,7 +45,7 @@ export class User extends BaseModel{
     @Column({ nullable: true})
     public address?: string;
 
-    @ManyToOne(()=> Roles)
+    @ManyToOne(()=> Roles, {nullable: true})
     @JoinTable()
     role?: Roles
 }

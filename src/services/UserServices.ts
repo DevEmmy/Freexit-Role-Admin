@@ -2,6 +2,10 @@ import { Service } from "typedi";
 import UserRepository from "../respository/UserRepository";
 import bcrypt from "bcrypt";
 import { returnObject } from "../utilities/response";
+import jwt from "jsonwebtoken"
+require("dotenv").config()
+
+const jwt_secret = "SNOSD9SDD"
 
 const saltRounds = 8
 
@@ -10,15 +14,26 @@ export class UserServices{
     constructor(private readonly userRepository: UserRepository){
     }
 
+    async getToken(userId: string){
+        const token = jwt.sign({userId}, jwt_secret);
+        return token;
+    }
+
     async signUp (data: any, revealPassword: boolean = false){
-        let initialPassword = data.password
-        data.password = await bcrypt.hash(data.password, saltRounds);
-        console.log(data)
-        let result = await this.userRepository.save(data);
-        if(revealPassword){
-            result.password = initialPassword;
+        try{
+            let initialPassword = data.password
+            data.password = await bcrypt.hash(data.password, saltRounds);
+            let result = await this.userRepository.save(data);
+            let token = await this.getToken(result.userId)
+                if(revealPassword){
+                    result.password = initialPassword;
+                }
+            return returnObject({result, token}, "Signed Up Successfully");
         }
-        return returnObject(result, "Signed Up Successfully");
+        catch(err: any){
+            returnObject(null, err.message, err.status)
+        }
+       
     }
 
     async signIn(data:any){
@@ -26,7 +41,8 @@ export class UserServices{
         if(user){
             let doMatch = await bcrypt.compare(data.password, user.password)
             if(doMatch){
-                return returnObject(user, "Signed In Successfully")
+                let token = await this.getToken(user.userId)
+                return returnObject({user, token}, "Signed In Successfully")
             }
             else{
                 return returnObject(null, "Incorrect Password", 403)
