@@ -1,0 +1,143 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Freexit Role Administration",
+      "description": "Freexit Role Administration API",
+      "license": {
+        "name": "MIT"
+      }
+    },
+    "host": "role-admn.freexitnow.com",
+    "basePath": "/",
+    "tags": [
+      {
+        "name": "Sign in",
+        "description": "API for Sign into the system"
+      },
+      {
+        "name": "Sign up",
+        "description": "API for Sign Up in the system"
+      },
+      {
+        "name": "Invite User",
+        "description": "API for Inviting User as Admin in the system"
+      }
+
+    ],
+    "schemes": [
+      "https"
+    ],
+    "consumes": [
+      "application/json"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "paths": {
+      "/users/sign-in": {
+        "parameters": [
+            {
+              "name": "User",
+              "in": "body",
+              "description": "Details to Sign In",
+              "schema": {
+                "$ref": "#/definitions/SignInDTO"
+              }
+            }
+          ],
+          "post": {
+          "summary": "Signs admin in",
+          "tags": [
+            "Sign in"
+          ],
+          "responses": {
+            "200": {
+              "description": "Signed in Successfully",
+              "schema": {
+                "$ref": "#/definitions/SignInResponse"
+              }
+            }
+          }
+        }
+      },
+      "/users/sign-up": {
+        "parameters": [
+            {
+              "name": "User",
+              "in": "body",
+              "description": "Details to Sign up",
+              "schema": {
+                "$ref": "#/definitions/SignInDTO"
+              }
+            }
+          ],
+          "post": {
+          "summary": "Signs admin up",
+          "tags": [
+            "Sign up"
+          ],
+          "responses": {
+            "200": {
+              "description": "Signed in Successfully",
+              "schema": {
+                "$ref": "#/definitions/SignInResponse"
+              }
+            }
+          }
+        }
+      },
+      "/users/invite-user": {
+        "post": {
+            "summary": "Invites user as an Admin",
+            "tags": ["Invite User"],
+            "responses": {
+                "200":{
+                    "description": "API for Inviting User as Admin in the system",
+                    "schema": {
+                        "$ref": "#/definitions/InviteResponse"
+                    }
+                }
+            }
+        }
+      }
+  },
+  "definitions": {
+    "SignInResponse": {
+        "properties":{
+            "status":{
+                "type": "number"
+            },
+            "payload": {
+                "type": "object"
+            },
+            "message": {
+                "type": "string"
+            }
+        }
+    },
+    "InviteResponse": {
+        "properties":{
+            "status":{
+                "type": "number"
+            },
+            "payload": {
+                "type": "object"
+            },
+            "message": {
+                "type": "string"
+            }
+        }
+    },
+    "SignInDTO": {
+        "properties":{
+            "email":{
+                "type": "string"
+            },
+            "password": {
+                "type": "string"
+            }
+        }
+    }
+  }
+}

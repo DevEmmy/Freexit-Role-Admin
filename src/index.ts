@@ -16,6 +16,9 @@ import { PermissionController } from "./controller/PermissionController";
 import { RolePermissionController } from "./controller/RolePermissionController";
 import { RoleController } from "./controller/RoleController";
 import validateAuth from "./middlewares/validateAuth";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsdoc from "swagger-jsdoc";
+const swaggerDocument = require('../swagger.json');
 
 
 app.use(express.json({ limit: '50mb' }));
@@ -47,6 +50,23 @@ AppDataSource.initialize()
     })
     .catch((error) => console.log(error))
 
+
+const swaggerOptions = {
+    swaggerDefinition: {
+      openapi: '3.0.0',
+          info: {
+            title: 'Freexit Role Administration',
+            version: '1.0.0',
+            description: 'API documentation for Freexit Role Admin',
+          },
+        },
+        apis: ['./routes/*.js'], // Path to the API routes in your project
+      };
+
+      const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 //Entities
 const entityController = Container.get(EntityController);
 app.post("/entity/add", (req:Request, res: Response)=>entityController.addEntities(req, res))
@@ -57,7 +77,7 @@ app.get("/entity/all", validateAuth ,(req:Request, res: Response)=>entityControl
 const userController = Container.get(UserController);
 app.post("/users/sign-in",  (req: Request, res: Response)=> userController.login(req, res));
 app.post("/users/sign-up",  (req: Request, res: Response)=> userController.signUp(req, res));
-app.post("/users/invite-user",  (req: Request, res: Response)=> userController.inviteUserAsAdmin(req, res));
+app.post("/users/invite-user",validateAuth,  (req: Request, res: Response)=> userController.inviteUserAsAdmin(req, res));
 
 //Permissions
 const permissionController = Container.get(PermissionController)
