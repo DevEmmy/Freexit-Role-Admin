@@ -10,6 +10,11 @@ export enum UserType {
     ADMIN = 3
 }
 
+export enum STATUS {
+    PENDING = "PENDING",
+    ACCEPTED = "ACCEPTED"
+}
+
 
 @Entity()
 export class User extends BaseModel{
@@ -41,6 +46,11 @@ export class User extends BaseModel{
 
     @Column({ nullable: true})
     public countryCode?: string;
+
+    @Column({nullable: false, type: "enum",
+    enum: STATUS,
+    default: STATUS.PENDING})
+    public status?: STATUS.PENDING
 
     @Column({ nullable: true})
     public address?: string;

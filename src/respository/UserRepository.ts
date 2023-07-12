@@ -33,7 +33,7 @@ export default class UserRepository{
     }
 
     async update(userId: string, data: Object){
-        let result = await this.userRepository.update(userId, data)
+        let result = await this.userRepository.update( {userId} , data)
         return result;
     }
 }

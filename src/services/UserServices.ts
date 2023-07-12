@@ -5,9 +5,10 @@ import { returnObject } from "../utilities/response";
 import jwt from "jsonwebtoken"
 require("dotenv").config()
 
-const jwt_secret = "SNOSD9SDD"
+const jwt_secret = process.env.JWT_SECRET || "SNOSD9SDD"
 
 const saltRounds = 8
+
 
 @Service()
 export class UserServices{
@@ -58,7 +59,7 @@ export class UserServices{
         return returnObject(result, "Deleted Successfully");
     }
 
-    async updatePermission(userId: string, data: any){
+    async update(userId: string, data: any){
         let result = await this.userRepository.update(userId, data);
         return result;
     }
@@ -72,4 +73,5 @@ export class UserServices{
         let result = await this.userRepository.findOne(userId);
         return result;
     }
+    
 }
