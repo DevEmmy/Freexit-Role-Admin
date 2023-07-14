@@ -18,6 +18,7 @@ import { RoleController } from "./controller/RoleController";
 import validateAuth from "./middlewares/validateAuth";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
+import { Invite } from "./model/Invite";
 const swaggerDocument = require('../swagger.json');
 
 
@@ -35,7 +36,7 @@ export const AppDataSource = new DataSource({
     database: "free",
     synchronize: true,
     logging: true,
-    entities: [User, Roles, Entity, Permission, RolePermission],
+    entities: [User, Roles, Entity, Permission, Invite, RolePermission],
     subscribers: [],
     "migrations": [
         "src/migration/**/*.ts"
@@ -78,7 +79,7 @@ const userController = Container.get(UserController);
 app.post("/users/sign-in",  (req: Request, res: Response)=> userController.login(req, res));
 app.post("/users/sign-up",  (req: Request, res: Response)=> userController.signUp(req, res));
 app.post("/users/invite-user",validateAuth,  (req: Request, res: Response)=> userController.inviteUserAsAdmin(req, res));
-app.get("/users/accept-invite",  (req: Request, res: Response)=> userController.acceptInvite(req, res));
+app.post("/users/accept-invite",  (req: Request, res: Response)=> userController.acceptInvite(req, res));
 
 //Permissions
 const permissionController = Container.get(PermissionController)

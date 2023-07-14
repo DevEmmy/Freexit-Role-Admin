@@ -6,6 +6,7 @@ import { RoleService } from "../services/RoleServices";
 import { generatePassword } from "../utilities/password-generator";
 import jwt from "jsonwebtoken"
 import { STATUS, User } from "../model/User";
+import { InviteService } from "../services/InviteServices";
 require("dotenv").config()
 
 const jwt_secret = process.env.JWT_SECRET || "SNOSD9SDD"
@@ -17,7 +18,7 @@ interface Result {
 
 @Service()
 export class UserController{
-    constructor(private readonly userService: UserServices, private readonly roleService: RoleService ){
+    constructor(private readonly userService: UserServices, private readonly roleService: RoleService, private readonly inviteService: InviteService ){
     }
 
     async login(request: Request, response: Response){
@@ -47,11 +48,11 @@ export class UserController{
     async inviteUserAsAdmin(request: Request, response:Response){
         try{
             let {email, roleId} = request.body;
-            let user: any = {email, password: generatePassword()};
+            let user: any = {email};
             let roleObject = await this.roleService.getOne(roleId);
             user.role = roleObject
-            let result = await this.userService.signUp(user, true);
-            let link = await this.generateAcceptanceLinkLink(result?.payload.result.userId)
+            let result = await this.inviteService.addinvite(user);
+            let link = await this.generateAcceptanceLinkLink(email)
             response.json({result, link})
         }
         catch(err: any){
@@ -60,11 +61,10 @@ export class UserController{
         }
     }
 
-    async generateAcceptanceLinkLink(userId: string){
+    async generateAcceptanceLinkLink(email: string){
         try{
             const expirationTime = Math.floor(Date.now() / 1000) + (30 * 60); // Set expiration time to 30 minutes
-            console.log(userId)
-            const token = jwt.sign({ userId, exp: expirationTime }, jwt_secret);
+            const token = jwt.sign({ email, exp: expirationTime }, jwt_secret);
 
             const link = `https://role-admn.freexitnow.com/users/accept-invite?token=${token}`;
             return link;
@@ -77,18 +77,21 @@ export class UserController{
     async acceptInvite(request: Request, response: Response){
         try{
             const {token} = request.query;
+            const user = request.body;
             let t: string = String(token)
             jwt.verify(t, jwt_secret,  async (err, payload)=>{
                 if(err){
                     response.json({message: err.message}).status(400)
                 }
-                let userId: any = payload
-                let user: any = await this.userService.getOne(userId.userId)
-                user.status = STATUS.ACCEPTED;
-                let updated = await this.userService.update(user.userId, user)
-                user = await this.userService.getOne(user.userId)
-
-                response.json(user)
+                let email: any = payload;
+                if(email.email === user.email){
+                    let result = await this.userService.signUp(user);
+                    // responseFunction(result, response) 
+                    response.json(result)
+                }
+                else{
+                    response.json({message: "This Service isn't Allowed!"})
+                }
             })
         }
         catch(err:  any){
