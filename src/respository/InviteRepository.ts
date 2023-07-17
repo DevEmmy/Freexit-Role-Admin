@@ -12,8 +12,8 @@ export default class InviteRepository{
         return result;
     }
 
-    async findOne(inviteId: string){
-        let result = await this.InviteRepository.findOne({ where: {inviteId} });
+    async findOne(email: string){
+        let result = await this.InviteRepository.findOne({ where: {email} });
         return result
     }
 
@@ -28,7 +28,7 @@ export default class InviteRepository{
     }
 
     async update(inviteId: string, data: Object){
-        let result = await this.InviteRepository.update(inviteId, data)
+        let result = await this.InviteRepository.update({inviteId}, data)
         return result;
     }
 }

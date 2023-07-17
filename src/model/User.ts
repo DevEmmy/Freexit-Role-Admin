@@ -47,11 +47,6 @@ export class User extends BaseModel{
     @Column({ nullable: true})
     public countryCode?: string;
 
-    @Column({nullable: false, type: "enum",
-    enum: STATUS,
-    default: STATUS.PENDING})
-    public status?: STATUS.PENDING
-
     @Column({ nullable: true})
     public address?: string;
 

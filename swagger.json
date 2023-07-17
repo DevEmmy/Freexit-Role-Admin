@@ -22,6 +22,10 @@
       {
         "name": "Invite User",
         "description": "API for Inviting User as Admin in the system"
+      },
+      {
+        "name": "Accept Invite",
+        "description": "API for Accepting Invite"
       }
 
     ],
@@ -88,12 +92,46 @@
         }
       },
       "/users/invite-user": {
+        "parameters": [
+          {
+            "name": "Invite",
+            "in": "body",
+            "description": "Details to Invite User",
+            "schema": {
+              "$ref": "#/definitions/InviteDTO"
+            }
+          }
+        ],
         "post": {
             "summary": "Invites user as an Admin",
             "tags": ["Invite User"],
             "responses": {
                 "200":{
                     "description": "API for Inviting User as Admin in the system",
+                    "schema": {
+                        "$ref": "#/definitions/InviteResponse"
+                    }
+                }
+            }
+        }
+      },
+      "/users/accept-invite?token=": {
+        "parameters": [
+          {
+            "name": "Invite",
+            "in": "body",
+            "description": "Details to Accept Invite",
+            "schema": {
+              "$ref": "#/definitions/SignInDTO"
+            }
+          }
+        ],
+        "post": {
+            "summary": "Accept Invite",
+            "tags": ["Accept Invite"],
+            "responses": {
+                "200":{
+                    "description": "API for Accepting Invite",
                     "schema": {
                         "$ref": "#/definitions/InviteResponse"
                     }
@@ -118,13 +156,10 @@
     },
     "InviteResponse": {
         "properties":{
-            "status":{
-                "type": "number"
-            },
-            "payload": {
+            "result":{
                 "type": "object"
             },
-            "message": {
+            "link": {
                 "type": "string"
             }
         }
@@ -138,6 +173,16 @@
                 "type": "string"
             }
         }
-    }
+    },
+    "InviteDTO": {
+      "properties":{
+          "email":{
+              "type": "string"
+          },
+          "roleId": {
+              "type": "string"
+          }
+      }
+  }
   }
 }

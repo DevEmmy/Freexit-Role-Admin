@@ -51,7 +51,10 @@ export class UserController{
             let user: any = {email};
             let roleObject = await this.roleService.getOne(roleId);
             user.role = roleObject
-            let result = await this.inviteService.addinvite(user);
+            let result = await this.inviteService.getOne(email)
+            if(!result){
+                result = await this.inviteService.addinvite(user);
+            }
             let link = await this.generateAcceptanceLinkLink(email)
             response.json({result, link})
         }
@@ -63,7 +66,7 @@ export class UserController{
 
     async generateAcceptanceLinkLink(email: string){
         try{
-            const expirationTime = Math.floor(Date.now() / 1000) + (30 * 60); // Set expiration time to 30 minutes
+            const expirationTime = Math.floor(Date.now() / 1000) + (24 * 60 * 60);
             const token = jwt.sign({ email, exp: expirationTime }, jwt_secret);
 
             const link = `https://role-admn.freexitnow.com/users/accept-invite?token=${token}`;
@@ -85,6 +88,9 @@ export class UserController{
                 }
                 let email: any = payload;
                 if(email.email === user.email){
+                    let invite:any = await this.inviteService.getOne(email.email)
+                    invite.status = STATUS.ACCEPTED;
+                    invite = await this.inviteService.updateinvite(invite.inviteId, invite)
                     let result = await this.userService.signUp(user);
                     // responseFunction(result, response) 
                     response.json(result)

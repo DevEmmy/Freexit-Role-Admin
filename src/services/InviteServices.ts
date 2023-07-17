@@ -25,8 +25,8 @@ export class InviteService {
         return result;
     }
 
-    async getOne(inviteId: string){
-        let result = await this.inviteRepository.findOne(inviteId);
+    async getOne(email: string){
+        let result = await this.inviteRepository.findOne(email);
         return result;
     }
 }
