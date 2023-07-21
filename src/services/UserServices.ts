@@ -3,9 +3,10 @@ import UserRepository from "../respository/UserRepository";
 import bcrypt from "bcrypt";
 import { returnObject } from "../utilities/response";
 import jwt from "jsonwebtoken"
-require("dotenv").config()
+import dotenv from 'dotenv';
+dotenv.config();
 
-const jwt_secret = process.env.JWT_SECRET || "SNOSD9SDD"
+const jwt_secret = process.env.JWT_SECRET
 
 const saltRounds = 8
 
@@ -16,7 +17,7 @@ export class UserServices{
     }
 
     async getToken(userId: string){
-        const token = jwt.sign({userId}, jwt_secret);
+        const token = jwt.sign({userId}, String(jwt_secret));
         return token;
     }
 

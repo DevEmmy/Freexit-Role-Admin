@@ -7,9 +7,12 @@ import { generatePassword } from "../utilities/password-generator";
 import jwt from "jsonwebtoken"
 import { STATUS, User } from "../model/User";
 import { InviteService } from "../services/InviteServices";
-require("dotenv").config()
+import dotenv from 'dotenv';
+dotenv.config();
 
-const jwt_secret = process.env.JWT_SECRET || "SNOSD9SDD"
+const jwt_secret = String(process.env.JWT_SECRET)
+const frontendUrl = String(process.env.FRONTEND_URL)
+
 interface Result {
     payload: any,
     message: string,
@@ -69,7 +72,7 @@ export class UserController{
             const expirationTime = Math.floor(Date.now() / 1000) + (24 * 60 * 60);
             const token = jwt.sign({ email, exp: expirationTime }, jwt_secret);
 
-            const link = `https://role-admn.freexitnow.com/users/accept-invite?token=${token}`;
+            const link = `${frontendUrl}/users/accept-invite?token=${token}`;
             return link;
         }
         catch(err:  any){

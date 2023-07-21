@@ -20,6 +20,8 @@ import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import { Invite } from "./model/Invite";
 const swaggerDocument = require('../swagger.json');
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 app.use(express.json({ limit: '50mb' }));
@@ -31,9 +33,9 @@ export const AppDataSource = new DataSource({
     type: "postgres",
     host: "localhost",
     port: 5432,
-    username: "postgres",
-    password: "devemmy",
-    database: "free",
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     synchronize: true,
     logging: true,
     entities: [User, Roles, Entity, Permission, Invite, RolePermission],
