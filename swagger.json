@@ -179,6 +179,9 @@
           "email":{
               "type": "string"
           },
+          "name": {
+            "type": "string"
+          },
           "roleId": {
               "type": "string"
           }

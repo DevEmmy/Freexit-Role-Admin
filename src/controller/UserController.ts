@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken"
 import { STATUS, User } from "../model/User";
 import { InviteService } from "../services/InviteServices";
 import dotenv from 'dotenv';
+import { EmailService } from "../services/EmailService";
 dotenv.config();
 
 const jwt_secret = String(process.env.JWT_SECRET)
@@ -21,7 +22,7 @@ interface Result {
 
 @Service()
 export class UserController{
-    constructor(private readonly userService: UserServices, private readonly roleService: RoleService, private readonly inviteService: InviteService ){
+    constructor(private readonly userService: UserServices, private readonly roleService: RoleService, private readonly inviteService: InviteService, private readonly emailService: EmailService ){
     }
 
     async login(request: Request, response: Response){
@@ -50,7 +51,7 @@ export class UserController{
 
     async inviteUserAsAdmin(request: Request, response:Response){
         try{
-            let {email, roleId} = request.body;
+            let {email, roleId, name} = request.body;
             let user: any = {email};
             let roleObject = await this.roleService.getOne(roleId);
             user.role = roleObject
@@ -58,7 +59,8 @@ export class UserController{
             if(!result){
                 result = await this.inviteService.addinvite(user);
             }
-            let link = await this.generateAcceptanceLinkLink(email)
+            let link = String(await this.generateAcceptanceLinkLink(email))
+            this.emailService.sendEmail(email, link, "Admin Invite", name)
             response.json({result, link})
         }
         catch(err: any){
