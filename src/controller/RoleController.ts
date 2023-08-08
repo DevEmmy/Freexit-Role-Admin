@@ -10,9 +10,18 @@ export class RoleController{
 
     async add(request: Request, response: Response){
         try{
-            let rolePermission = request.body;
-            let result = await this.roleService.add(rolePermission);
-            responseFunction(result, response)
+            const roles = [
+                {name:"Super Admin"},
+                {name:"Admin"},
+                {name: "Manager"},
+                {name: "Internal Users"}
+            ]
+            for(let i = 0; i <= roles.length-1; i++){
+                let result = await this.roleService.add(roles[i]);
+                console.log(result)
+            }
+            
+            response.json({message: "Added Successfully"})
         }
         catch(err: any){
             let result = returnObject(null, err.message, err.status)
