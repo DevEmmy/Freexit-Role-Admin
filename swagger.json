@@ -26,6 +26,10 @@
       {
         "name": "Accept Invite",
         "description": "API for Accepting Invite"
+      },
+      {
+        "name": "Get All Roles",
+        "description": "This Endpoint is to get all roles"
       }
 
     ],
@@ -138,6 +142,26 @@
                 }
             }
         }
+      },
+      "/roles/add": {
+        "parameters": [
+          {
+            "name":"Get All Roles",
+            "description":"This Endpoint is to get all roles"
+          }
+        ],
+        "get":{
+          "summary": "Get all Roles",
+          "tags": ["Get All Roles"],
+          "responses":{
+            "200":{
+              "description":"This Endpoint is to get all roles",
+              "schema": {
+                "$ref": "#/definitions/Roles"
+              }
+            }
+          }
+        }
       }
   },
   "definitions": {
@@ -186,6 +210,9 @@
               "type": "string"
           }
       }
+  },
+  "Roles":{
+    "properties": "array"
   }
   }
 }
